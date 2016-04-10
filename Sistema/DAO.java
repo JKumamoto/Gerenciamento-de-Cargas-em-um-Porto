@@ -18,10 +18,12 @@ public class DAO {
 		}catch(SQLException e){}
   	}
 
-	public void CadastraEntrada(int DataChegada, int LocalChegada, int TempoPrevisto, String Dono) {
+	public Carga CadastraEntrada(Carga c) {
+		return c;
   	}
 
   	public void CadastraSaida(int ID, int DataSaida, int LocalSaida) {
+
   	}
 
 }

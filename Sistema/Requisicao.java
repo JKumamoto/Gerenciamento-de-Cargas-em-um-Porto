@@ -1,7 +1,7 @@
-public class Resposta {
-	
-	public static final int ErroSaidaCarga=-2;
+public class Requisicao {
+
 	public static final int ErroCadastramentoCarga=-1;
+	public static final int ErroSaidaCarga=-2;
 	public static final int ErroDesconhecido=0;
 	public static final int CadastramentoCarga=1;
 	public static final int SaidaCarga=2;

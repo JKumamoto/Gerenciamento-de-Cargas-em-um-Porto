@@ -1,5 +1,8 @@
 public class Carga {
 
+	public static final int Navio=1;
+	public static final int Caminhao=2;
+
 	private int ID;
 	private int DataChegada;
 	private int LocalChegada;
@@ -20,7 +23,49 @@ public class Carga {
 		this.Destinatario=Destinatario;
 	}
 
-	public void Saida(int ID, int DataSaida, int LocalSaida) {
+	public int getID(){
+		return ID;
+	}
+
+	public void setID(int ID){
+		this.ID=ID;
+	}
+
+	public int getDataChegada(){
+		return DataChegada;
+	}
+
+	public int getLocalChegada(){
+		return LocalChegada;
+	}
+
+	public int getTempoPrevisto(){
+		return TempoPrevisto;
+	}
+
+	public int getDataSaida(){
+		return DataChegada;
+	}
+
+	public int getLocalSaida(){
+		return LocalChegada;
+	}
+	
+	public String getDono(){
+		return Dono;
+	}
+
+	public String getRemetente(){
+		return Remetente;
+	}
+
+	public String getDestinatario(){
+		return Destinatario;
+	}
+
+	public void Saida(int DataSaida, int LocalSaida) {
+		this.DataSaida=DataSaida;
+		this.LocalSaida=LocalSaida;
   	}
 
 }
