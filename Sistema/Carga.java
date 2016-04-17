@@ -1,26 +1,29 @@
 public class Carga {
 
-	public static final int Navio=1;
-	public static final int Caminhao=2;
-
 	private int ID;
-	private int DataChegada;
-	private int LocalChegada;
-	private int TempoPrevisto;
-	private int DataSaida;
-	private int LocalSaida;
+	private String DataChegada;
+	private boolean LocalChegada;
+	private String TempoPrevisto;
+	private String DataSaida;
+	private boolean LocalSaida;
 	private String Dono;
 	private int Posicao;
 	private String Remetente;
 	private String Destinatario;
 
-	public Carga(int DataChegada, int LocalChegada, int TempoPrevisto, String Dono, String Remetente, String Destinatario){
+	public Carga(String DataChegada, boolean LocalChegada, String TempoPrevisto, String Dono, String Remetente, String Destinatario){
 		this.DataChegada=DataChegada;
 		this.LocalChegada=LocalChegada;
 		this.TempoPrevisto=TempoPrevisto;
 		this.Dono=Dono;
 		this.Remetente=Remetente;
 		this.Destinatario=Destinatario;
+	}
+
+	public Carga(int ID, String DataSaida, boolean LocalSaida){
+		this.ID=ID;
+		this.DataSaida=DataSaida;
+		this.LocalSaida=LocalSaida;
 	}
 
 	public int getID(){
@@ -31,23 +34,23 @@ public class Carga {
 		this.ID=ID;
 	}
 
-	public int getDataChegada(){
+	public String getDataChegada(){
 		return DataChegada;
 	}
 
-	public int getLocalChegada(){
+	public boolean getLocalChegada(){
 		return LocalChegada;
 	}
 
-	public int getTempoPrevisto(){
+	public String getTempoPrevisto(){
 		return TempoPrevisto;
 	}
 
-	public int getDataSaida(){
+	public String getDataSaida(){
 		return DataChegada;
 	}
 
-	public int getLocalSaida(){
+	public boolean getLocalSaida(){
 		return LocalChegada;
 	}
 	
@@ -63,9 +66,18 @@ public class Carga {
 		return Destinatario;
 	}
 
-	public void Saida(int DataSaida, int LocalSaida) {
+	public int getPosicao(){
+		return Posicao;
+	}
+
+	public void setPosicao(int Posicao){
+		this.Posicao=Posicao;
+	}
+
+	public void Saida(String DataSaida, boolean LocalSaida) {
 		this.DataSaida=DataSaida;
 		this.LocalSaida=LocalSaida;
+		setPosicao(1000);
   	}
 
 }

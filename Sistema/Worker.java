@@ -47,8 +47,11 @@ public class Worker implements Runnable{
 					System.out.println("Saída de Carga requisitado por: "
 								+Cliente.getInetAddress().getHostAddress());
 					Carga ca=req.getCarga();
-					bd.CadastraSaida(ca.getID(), ca.getDataSaida(), ca.getLocalSaida());
-					rep.setTipo(Resposta.SaidaCarga);
+					boolean a=bd.CadastraSaida(ca.getID(), ca.getDataSaida(), ca.getLocalSaida());
+					if(a)
+						rep.setTipo(Resposta.SaidaCarga);
+					else
+						rep.setTipo(Resposta.ErroSaidaCarga);
 				}catch(Exception e){
 					rep.setTipo(Resposta.ErroSaidaCarga);
 				}
