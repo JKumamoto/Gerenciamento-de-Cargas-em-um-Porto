@@ -14,6 +14,9 @@ Registry-Server: Servidor
 Run-Server: 
 		java -cp .:mysql-connector-java-5.1.28.jar Server &
 
+Run-Cliente: Cliente
+		java Programa
+
 default: Requisicao.class Resposta.class Patio.class Carga.class
 
 Servidor: default DAO.class Server.class
