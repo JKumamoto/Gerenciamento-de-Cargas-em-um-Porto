@@ -1,14 +1,15 @@
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.net.Socket;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.rmi.Naming;
 import javax.swing.JOptionPane;
+import java.text.ParseException;
 
 public class FormSaidaCarga extends javax.swing.JFrame {
 
-    public FormSaidaCarga() {
+   	private static final long serialVersionUID=1L;
+
+	public FormSaidaCarga() {
         initComponents();
     }
 
@@ -113,15 +114,15 @@ public class FormSaidaCarga extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         //botao cancelar
 		this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         //botao enviar
  		try{
+			if(jTextField1.getText().equals("")||jTextField2.getText().equals(""))
+				throw new RuntimeException("Preencha todos os campos");
 	        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 			sdf.setLenient(false);
 			Calendar cal=Calendar.getInstance();
@@ -137,28 +138,36 @@ public class FormSaidaCarga extends javax.swing.JFrame {
 			else if(jRadioButton2.isSelected())
 				LocalSaida=false;
 			else
-				JOptionPane.showMessageDialog(null, "Selecione um Local de Chegada");
+				throw new RuntimeException("Escolha um metodo de transporte");
 
 			Carga c=new Carga(id, DataSaida, LocalSaida);
 			Requisicao req=new Requisicao();
 			req.setTipo(Requisicao.SaidaCarga);
 			req.setCarga(c);
+			Server_Interface server=(Server_Interface)Naming.lookup("rmi://localhost/Servidor");
+			Resposta rep=server.EntradaCarga(req);
 
-			Socket cliente=new Socket("127.0.0.1", 9500);
-			cliente.setKeepAlive(true);
-			ObjectOutputStream out=new ObjectOutputStream(cliente.getOutputStream());
-			out.writeObject(req);
-			ObjectInputStream in=new ObjectInputStream(cliente.getInputStream());
-			Resposta rep=(Resposta)in.readObject();
+			switch(rep.getTipo()){
+				case Resposta.ErroID:
+					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado\nID Invalido");
+					break;
+				case Resposta.ErroSaidaCarga:
+					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado");
+					break;
+				case Resposta.SaidaCarga:
+					JOptionPane.showMessageDialog(null, "Cadastramento de Saida realizado com Sucesso");
+					break;
+				default:
+					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado\nErro Desconhecido");
+					break;
+			}
 
-			if(rep.getTipo()==Resposta.CadastramentoCarga)
-				JOptionPane.showMessageDialog(null, "Cadastramento realizado com Sucesso");
-			else
-				JOptionPane.showMessageDialog(null, "Cadastramento nao realizado");
-
-			out.close();
-			in.close();
-			cliente.close();
+		}catch(NumberFormatException e){
+			JOptionPane.showMessageDialog(null, "Digite apenas numeros no campo ID");
+		}catch(ParseException e){
+			JOptionPane.showMessageDialog(null, "Digite a data no formato dd/mm/aaaa");
+		}catch(RuntimeException e){
+			JOptionPane.showMessageDialog(null, ""+e.getMessage());
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -1,5 +1,10 @@
-public class Resposta {
+import java.io.Serializable;
+
+public class Resposta implements Serializable{
 	
+	private static final long serialVersionUID=1L;
+	public static final int PatioCheio=-4;
+	public static final int ErroID=-3;
 	public static final int ErroSaidaCarga=-2;
 	public static final int ErroCadastramentoCarga=-1;
 	public static final int ErroDesconhecido=0;

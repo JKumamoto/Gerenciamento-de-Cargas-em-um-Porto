@@ -14,20 +14,16 @@ public class Patio {
 		return size;
 	}
 
-	public boolean Libera(int Posicao) {
-		if(!Posicoes[Posicao])	return false;
+	public void Libera(int Posicao) {
 		Posicoes[Posicao]=false;
-		return true;
   	}
 
 	public boolean Ocupado(int Posicao) {
 		return Posicoes[Posicao];
   	}
 
-	public boolean ColocaCarga(int Posicao) {
-		if(Posicoes[Posicao])	return false;
+	public void ColocaCarga(int Posicao) {
 		Posicoes[Posicao]=true;
-		return true;
   	}
 
 }

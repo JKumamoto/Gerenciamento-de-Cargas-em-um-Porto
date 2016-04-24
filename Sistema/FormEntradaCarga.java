@@ -1,14 +1,15 @@
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.net.Socket;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.rmi.Naming;
+import java.text.ParseException;
 import javax.swing.JOptionPane;
 
 public class FormEntradaCarga extends javax.swing.JFrame {
 
-    public FormEntradaCarga() {
+   	private static final long serialVersionUID=1L;
+
+	public FormEntradaCarga() {
         initComponents();
     }
 
@@ -135,6 +136,9 @@ public class FormEntradaCarga extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //botao cadastrar
 		try{
+			if(jTextField1.getText().equals("")||jTextField2.getText().equals("")||
+					jTextField3.getText().equals("")||jTextField4.getText().equals("")||jTextField5.getText().equals(""))
+				throw new RuntimeException("Preencha todos os campos");
 	        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 			sdf.setLenient(false);
 			Calendar cal=Calendar.getInstance();
@@ -154,28 +158,35 @@ public class FormEntradaCarga extends javax.swing.JFrame {
 			else if(jRadioButton2.isSelected())
 				LocalChegada=false;
 			else
-				JOptionPane.showMessageDialog(null, "Selecione um Local de Chegada");
+				throw new RuntimeException("Escolha um metodo de transporte");
 
 			Carga c=new Carga(DataChegada, LocalChegada, TempoPrevisto, Dono, Remetente, Destinatario);
 			Requisicao req=new Requisicao();
 			req.setTipo(Requisicao.CadastramentoCarga);
 			req.setCarga(c);
+			Server_Interface server=(Server_Interface)Naming.lookup("rmi://localhost/Servidor");
+			Resposta rep=server.EntradaCarga(req);
 
-			Socket cliente=new Socket("127.0.0.1", 9500);
-			cliente.setKeepAlive(true);
-			ObjectOutputStream out=new ObjectOutputStream(cliente.getOutputStream());
-			out.writeObject(req);
-			ObjectInputStream in=new ObjectInputStream(cliente.getInputStream());
-			Resposta rep=(Resposta)in.readObject();
+			switch(rep.getTipo()){
+				case Resposta.CadastramentoCarga:
+					JOptionPane.showMessageDialog(null, "Cadastramento realizado com Sucesso\nID="
+							+req.getCarga().getID()+"\nPosicao="+req.getCarga().getPosicao());
+					break;
+				case Resposta.ErroCadastramentoCarga:
+					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado");
+					break;
+				case Resposta.PatioCheio:
+					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado\nPatio Cheio");
+					break;
+				default:
+					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado\nErro Desconhecido");
+					break;
+			}
 
-			if(rep.getTipo()==Resposta.CadastramentoCarga)
-				JOptionPane.showMessageDialog(null, "Cadastramento realizado com Sucesso");
-			else
-				JOptionPane.showMessageDialog(null, "Cadastramento nao realizado");
-
-			out.close();
-			in.close();
-			cliente.close();
+		}catch(ParseException e){
+			JOptionPane.showMessageDialog(null, "Digite a data no formato dd/mm/aaaa");
+		}catch(RuntimeException e){
+			JOptionPane.showMessageDialog(null, ""+e.getMessage());
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -1,5 +1,8 @@
-public class Carga {
+import java.io.Serializable;
 
+public class Carga implements Serializable{
+
+	private static final long serialVersionUID=1L;
 	private int ID;
 	private String DataChegada;
 	private boolean LocalChegada;
