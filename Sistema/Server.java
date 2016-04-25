@@ -1,6 +1,7 @@
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class Server extends UnicastRemoteObject implements Server_Interface{
 
@@ -13,15 +14,55 @@ public class Server extends UnicastRemoteObject implements Server_Interface{
 	}
 
 	public Resposta EntradaCarga(Requisicao req) throws RemoteException{
-		Resposta rep=bd.CadastraEntrada(req.getCarga());
-		System.out.println("Cadastramento de Carga requisitado\nResposta="+rep.getTipo());
+		Resposta rep=new Resposta();
+		try{
+			rep=bd.CadastraEntrada(req.getCarga());
+		}catch(SQLException e){
+			rep.setTipo(Resposta.ErroCadastramentoCarga);
+		}
 		return rep;
 	}
 
 	public Resposta SaidaCarga(Requisicao req) throws RemoteException{
+		Resposta rep=new Resposta();
 		Carga c=req.getCarga();
-		Resposta rep=bd.CadastraSaida(c.getID(), c.getDataSaida(), c.getLocalSaida());
-		System.out.println("Saída de Carga requisitado\nResposta="+req.getTipo());
+		try{
+			rep=bd.CadastraSaida(c.getID(), c.getDataSaida(), c.getLocalSaida());
+		}catch(SQLException e){
+			rep.setTipo(Resposta.ErroSaidaCarga);
+		}
+		return rep;
+	}
+
+	public Resposta Login(Requisicao req) throws RemoteException{
+		Resposta rep=new Resposta();
+		Funcionario f=req.getFuncionario();
+		try{
+			rep=bd.Login(f.getCPF(), f.getSenha());
+		}catch(SQLException e){
+			rep.setTipo(Resposta.ErroDesconhecido);
+		}
+		return rep;
+	}
+	
+	public Resposta CadastraFuncionario(Requisicao req) throws RemoteException{
+		Resposta rep=new Resposta();
+		try{
+			rep=bd.CadastraFuncionario(req.getFuncionario());
+		}catch(SQLException e){
+			rep.setTipo(Resposta.ErroCadastroFuncionario);
+		}
+		return rep;
+	}
+
+	public Resposta AlteraFuncionario(Requisicao req) throws RemoteException{
+		Resposta rep=new Resposta();
+		Funcionario f=req.getFuncionario();
+		try{
+			rep=bd.AlteraFuncionario(f, req.getTipo()==Requisicao.Promove);
+		}catch(SQLException e){
+			rep.setTipo(Resposta.ErroAlteraFuncionario);
+		}
 		return rep;
 	}
 

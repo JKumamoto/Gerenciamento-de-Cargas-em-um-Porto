@@ -11,7 +11,8 @@ public class FormSaidaCarga extends javax.swing.JFrame {
 
 	public FormSaidaCarga() {
         initComponents();
-    }
+        this.setLocationRelativeTo(null); 
+	}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -146,30 +147,25 @@ public class FormSaidaCarga extends javax.swing.JFrame {
 			req.setCarga(c);
 			Server_Interface server=(Server_Interface)Naming.lookup("rmi://localhost/Servidor");
 			Resposta rep=server.EntradaCarga(req);
+			int tipo=rep.getTipo();
 
-			switch(rep.getTipo()){
-				case Resposta.ErroID:
-					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado\nID Invalido");
-					break;
-				case Resposta.ErroSaidaCarga:
-					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado");
-					break;
-				case Resposta.SaidaCarga:
-					JOptionPane.showMessageDialog(null, "Cadastramento de Saida realizado com Sucesso");
-					break;
-				default:
-					JOptionPane.showMessageDialog(null, "Cadastramento nao realizado\nErro Desconhecido");
-					break;
-			}
+			if(tipo==Resposta.ErroID)
+				throw new RuntimeException("Cadastramento nao realizado\nID Invalido");
+			else if(tipo==Resposta.ErroSaidaCarga)
+				throw new RuntimeException("Cadastramento nao realizado");
+			else if(tipo==Resposta.SaidaCarga)
+				JOptionPane.showMessageDialog(this, "Cadastramento de Saida realizado com Sucesso");
+			else
+				throw new RuntimeException("Cadastramento nao realizado\nErro Desconhecido");
 
 		}catch(NumberFormatException e){
-			JOptionPane.showMessageDialog(null, "Digite apenas numeros no campo ID");
+			JOptionPane.showMessageDialog(this, "Digite apenas numeros no campo ID");
 		}catch(ParseException e){
-			JOptionPane.showMessageDialog(null, "Digite a data no formato dd/mm/aaaa");
+			JOptionPane.showMessageDialog(this, "Digite a data no formato dd/mm/aaaa");
 		}catch(RuntimeException e){
-			JOptionPane.showMessageDialog(null, ""+e.getMessage());
+			JOptionPane.showMessageDialog(this, ""+e.getMessage());
 		}catch(Exception e){
-			e.printStackTrace();
+		    JOptionPane.showMessageDialog(this, "Falha na Conexão com o Servidor");
 		}
        
     }//GEN-LAST:event_jButton1ActionPerformed
