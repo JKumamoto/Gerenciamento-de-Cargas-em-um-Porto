@@ -11,9 +11,9 @@ Projeto da Disciplina Engenharia de Software.
 > O sistema também prevê um controle de acesso ao funcionários. Estes devem ter login e senha cadastrados antes de poderem acessar o sistema. Com isso, um funcionário poderá acessar o sistema a partir de seu terminal de trabalho. Quando uma carga chega, um funcionário de carga/descarga cadastra sua entrada no porto. Quando uma carga é retirada, o mesmo tipo de funcionário cadastra sua saída do porto. A qualquer momento, um funcionário com permissão de acesso ao sistema, pode consultar as cargas registradas que estão ou já estiveram no porto. Os funcionários são cadastrados no sistema pelos funcionários administrativos que tem, além de acesso ao gerenciamento de cargas, também acesso ao gerenciamento de usuários do sistema. Estes usuários podem cadastrar novos usuários e alterar dados de cargas já registradas caso haja problemas nos dados informados inicialmente. Um usuário administrativo tem acesso ao dados de todos os usuários menos daqueles que também são administrativos. 
 
 
-## Incremento 1
+## Incremento 2
 
-O incremento 1 contém as operações básicas do sistema, o registro de entrada e saída de carga.
+O incremento 2 contém as operações básicas do sistema vindas do incremento 1, o registro de entrada e saída de carga, além de operações para os usuários, os funcionários do porto, login, cadastro de funcionários e alteração dos dados dos funcionários.
 
 ### Compilando e Rodando
 
