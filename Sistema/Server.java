@@ -59,7 +59,7 @@ public class Server extends UnicastRemoteObject implements Server_Interface{
 		Resposta rep=new Resposta();
 		Funcionario f=req.getFuncionario();
 		try{
-			rep=bd.AlteraFuncionario(f, req.getTipo()==Requisicao.Promove);
+			rep=bd.AlteraFuncionario(f, f.isAdministrador());
 		}catch(SQLException e){
 			rep.setTipo(Resposta.ErroAlteraFuncionario);
 		}

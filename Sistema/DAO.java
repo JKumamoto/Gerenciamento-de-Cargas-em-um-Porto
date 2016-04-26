@@ -44,7 +44,8 @@ public class DAO {
 		while(rs.next()){
 			temp=new Funcionario(rs.getLong("CPF"), rs.getInt("RG"), rs.getString("nome"), rs.getString("endereco"),
 							rs.getInt("fone"), rs.getString("data_nasc"), rs.getString("email"),
-							rs.getBoolean("administrador"), rs.getString("senha"));
+							rs.getBoolean("administrador")); 
+			temp.setSenha(rs.getString("senha"));
 			funcionarios.put(temp.getCPF(), temp);
 		}
 	}
