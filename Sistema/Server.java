@@ -30,6 +30,7 @@ public class Server extends UnicastRemoteObject implements Server_Interface{
 			rep=bd.CadastraSaida(c.getID(), c.getDataSaida(), c.getLocalSaida());
 		}catch(SQLException e){
 			rep.setTipo(Resposta.ErroSaidaCarga);
+			e.printStackTrace();
 		}
 		return rep;
 	}

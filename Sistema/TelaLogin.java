@@ -122,12 +122,10 @@ public class TelaLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //BOTAO PRESSIONADO DE LOGIN
 		Login();
         }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -139,7 +137,6 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_formKeyPressed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jPasswordField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyPressed
@@ -148,7 +145,6 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1KeyPressed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
@@ -159,11 +155,13 @@ public class TelaLogin extends javax.swing.JFrame {
 	    try{
             if(jTextField1.getText().equals("")||jPasswordField1.getPassword().toString().equals(""))
 				throw new RuntimeException("Preencha todos os campos para continuar");
+			if(jTextField1.getText().length()<10||jTextField1.getText().length()>13)
+				throw new RuntimeException("O CPF deve conter apenas numeros e entre 10 e 13 numeros");
             long ch=Long.valueOf(jTextField1.getText());
-           	char c[]=jPasswordField1.getPassword();
-           	String x=new String(c);
+			char c[]=jPasswordField1.getPassword();
+			String senha=new String(c);
 
-			Funcionario func=new Funcionario(ch, x);
+			Funcionario func=new Funcionario(ch, senha);
 			Requisicao req=new Requisicao();
 			req.setTipo(Requisicao.Login);
 			req.setFuncionario(func);
@@ -190,6 +188,7 @@ public class TelaLogin extends javax.swing.JFrame {
             new TelaLogin().setVisible(true);
 		}catch(Exception e){
 		    JOptionPane.showMessageDialog(this, "Falha na Conexão com o Servidor");
+			e.printStackTrace();
 		}
 	}
 

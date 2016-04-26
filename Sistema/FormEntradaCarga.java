@@ -35,7 +35,7 @@ public class FormEntradaCarga extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 		group1=new javax.swing.ButtonGroup();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Data de Chegada");
         jLabel2.setText("Local Chegada");
@@ -141,11 +141,13 @@ public class FormEntradaCarga extends javax.swing.JFrame {
 
 			Date date1=sdf.parse(jTextField1.getText());
 			cal.setTime(date1);
-			String DataChegada=cal.get(Calendar.YEAR)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.DATE);
+			int mes=cal.get(Calendar.MONTH)+1;
+			String DataChegada=cal.get(Calendar.YEAR)+"-"+mes+"-"+cal.get(Calendar.DATE);
 
 			Date date2=sdf.parse(jTextField2.getText());
 			cal.setTime(date2);
-			String TempoPrevisto=cal.get(Calendar.YEAR)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.DATE);
+			mes=cal.get(Calendar.MONTH)+1;
+			String TempoPrevisto=cal.get(Calendar.YEAR)+"-"+mes+"-"+cal.get(Calendar.DATE);
 
 			String Dono=jTextField3.getText(), Remetente=jTextField4.getText(), Destinatario=jTextField5.getText();
 			boolean LocalChegada=false;
@@ -165,8 +167,8 @@ public class FormEntradaCarga extends javax.swing.JFrame {
 			int tipo=rep.getTipo();
 
 			if(tipo==Resposta.CadastramentoCarga)
-					JOptionPane.showMessageDialog(this, "Cadastramento realizado com Sucesso\nID="
-							+req.getCarga().getID()+"\nPosicao="+req.getCarga().getPosicao());
+				JOptionPane.showMessageDialog(this, "Cadastramento realizado com Sucesso\nID="
+							+rep.getCarga().getID()+"\nPosicao="+rep.getCarga().getPosicao());
 			else if(tipo==Resposta.ErroCadastramentoCarga)
 				throw new RuntimeException("Cadastramento nao realizado");
 			else if(tipo==Resposta.PatioCheio)
@@ -174,6 +176,8 @@ public class FormEntradaCarga extends javax.swing.JFrame {
 			else
 				throw new RuntimeException("Cadastramento nao realizado\nErro Desconhecido");
 
+			this.dispose();
+			new FormEntradaCarga().setVisible(true);
 		}catch(ParseException e){
 			JOptionPane.showMessageDialog(this, "Digite a data no formato dd/mm/aaaa");
 		}catch(RuntimeException e){

@@ -4,8 +4,10 @@ import javax.swing.JOptionPane;
 public class FormUpFunc extends javax.swing.JFrame {
 
 	private static final long serialVersionUID=1L;    
+	private Funcionario funcionario;
 
-	public FormUpFunc() {
+	public FormUpFunc(Funcionario funcionario){
+		this.funcionario=funcionario;
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -34,7 +36,7 @@ public class FormUpFunc extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("CPF");
 
@@ -169,11 +171,19 @@ public class FormUpFunc extends javax.swing.JFrame {
             if(jTextField1.getText().length()>13||jTextField1.getText().length()<10)
 				throw new RuntimeException("Preencha o CPF apenas com numeros e entre 10 e 13 numeros");
    			long chavecpf=Long.valueOf(jTextField1.getText());
-			int tel=Integer.parseInt(jTextField4.getText());
+			int tel=0;
+			if(!jTextField4.getText().equals(""))
+				tel=Integer.parseInt(jTextField4.getText());
+
+			if(chavecpf!=funcionario.getCPF()&&!funcionario.isAdministrador())
+				throw new RuntimeException("Voce nao possui permissao para alterar este usuario");
 
 			Funcionario f=new Funcionario(chavecpf, 0, jTextField2.getText(), jTextField3.getText(), 
 						tel, "", "", jCheckBox1.isSelected());
-			f.setSenha(jPasswordField1.getPassword().toString());
+			char c[]=jPasswordField1.getPassword();
+			String x=new String(c);
+
+			f.setSenha(x);
 			Requisicao req=new Requisicao();
 			req.setTipo(Requisicao.AlteraFuncionario);
 			req.setFuncionario(f);
@@ -191,7 +201,7 @@ public class FormUpFunc extends javax.swing.JFrame {
 				throw new RuntimeException("Cadastro nao alterado.\nErro Desconhecido");
 
             this.dispose();
-			new TelaUpFunc().setVisible(true);
+			new FormUpFunc(funcionario).setVisible(true);
         }catch(NumberFormatException e){
              JOptionPane.showMessageDialog(this, "Digite o Telefone e/ou CPF apenas com numeros");
         }catch(RuntimeException e){
@@ -204,12 +214,7 @@ public class FormUpFunc extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    public void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -231,7 +236,7 @@ public class FormUpFunc extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormUpFunc().setVisible(true);
+                new FormUpFunc(funcionario).setVisible(true);
             }
         });
     }

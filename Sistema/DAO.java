@@ -10,7 +10,7 @@ public class DAO {
 	private HashMap<Long, Funcionario> funcionarios;
 
 	public DAO(){
-		String url="jdbc:mysql://localhost:3306/porto";
+		String url="jdbc:mysql://localhost/porto";
 		String root="root";
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -22,8 +22,6 @@ public class DAO {
 			IniciaPatio();
 			RecuperaCarga();
 			RecuperaFuncionario();
-		}catch(SQLException e){
-			System.out.println("Erro na conexão com o banco de dados");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -94,12 +92,11 @@ public class DAO {
 		}
 		String op2="UPDATE patio SET ocupado=true WHERE patio.posicao="+i;
 		patio.ColocaCarga(i);
-		if(cargas.isEmpty())	c.setID(0);
-		else	c.setID(cargas.size());
+		c.setID(cargas.size());
 		c.setPosicao(i);
 		cargas.add(c);
 		String op1="INSERT INTO carga VALUES("+c.getID()+", "+c.getPosicao()+", '"+c.getDataChegada()+"', "+
-			c.getLocalChegada()+", '"+c.getTempoPrevisto()+"', null, null, '"+c.getDono()+"', '"+c.getRemetente()+
+			c.getLocalChegada()+", '"+c.getTempoPrevisto()+"', NULL, NULL, '"+c.getDono()+"', '"+c.getRemetente()+
 			"', '"+c.getDestinatario()+"')";
 
 		st1.execute(op1);
@@ -115,12 +112,19 @@ public class DAO {
 			resposta.setTipo(Resposta.ErroID);
 			return resposta;
 		}
-		Statement st1=con.createStatement();
-		Statement st2=con.createStatement();
-		String op1="UPDATE carga SET Posicao=1000, DataSaida='"+DataSaida+"', LocalSaida="+LocalSaida+" WHERE carga.id="+ID;
-		String op2="UPDATE patio SET ocupado=false WHERE patio.posicao="+cargas.get(ID).getPosicao();
-		st1.execute(op1);
-		st2.execute(op2);
+		//Statement st1=con.createStatement();
+		//Statement st2=con.createStatement();
+		//String op1="UPDATE carga SET Posicao=1000, DataSaida='"+DataSaida+"', LocalSaida="+LocalSaida+" WHERE carga.id="+ID;
+		//String op2="UPDATE patio SET ocupado=false WHERE patio.posicao="+cargas.get(ID).getPosicao();
+		//st1.execute(op1);
+		//st2.execute(op2);
+
+		CallableStatement cs=con.prepareCall("{call sp_saida_carga(?, ?, ?, ?)}");
+		cs.setInt(1, ID);
+		cs.setString(2, DataSaida);
+		cs.setBoolean(3, LocalSaida);
+		cs.setInt(4, cargas.get(ID).getPosicao());
+		cs.execute();
 		patio.Libera(cargas.get(ID).getPosicao());
 		cargas.get(ID).Saida(DataSaida, LocalSaida);
 		resposta.setTipo(Resposta.SaidaCarga);
@@ -164,7 +168,7 @@ public class DAO {
 				funcionarios.get(f.getCPF()).setNome(f.getNome());
 			if(!f.getEndereco().equals(""))
 				funcionarios.get(f.getCPF()).setEndereco(f.getEndereco());
-			if(!(f.getTelefone()==0))
+			if(f.getTelefone()!=0)
 				funcionarios.get(f.getCPF()).setTelefone(f.getTelefone());
 			if(!f.getSenha().equals(""))
 				funcionarios.get(f.getCPF()).setSenha(f.getSenha());
