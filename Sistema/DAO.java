@@ -112,13 +112,6 @@ public class DAO {
 			resposta.setTipo(Resposta.ErroID);
 			return resposta;
 		}
-		//Statement st1=con.createStatement();
-		//Statement st2=con.createStatement();
-		//String op1="UPDATE carga SET Posicao=1000, DataSaida='"+DataSaida+"', LocalSaida="+LocalSaida+" WHERE carga.id="+ID;
-		//String op2="UPDATE patio SET ocupado=false WHERE patio.posicao="+cargas.get(ID).getPosicao();
-		//st1.execute(op1);
-		//st2.execute(op2);
-
 		CallableStatement cs=con.prepareCall("{call sp_saida_carga(?, ?, ?, ?)}");
 		cs.setInt(1, ID);
 		cs.setString(2, DataSaida);
@@ -180,6 +173,39 @@ public class DAO {
 			resposta.setTipo(Resposta.AlteraFuncionario);
 		}else
 			resposta.setTipo(Resposta.ErroCPF);
+		return resposta;
+	}
+
+	public Resposta DelFuncionario(long cpf) throws SQLException{
+		Resposta resposta=new Resposta();
+		if(funcionarios.containsKey(cpf)){
+			Statement st=con.createStatement();
+			String op="DELETE FROM funcionario WHERE funcionario.cpf="+cpf;
+			st.execute(op);
+			funcionarios.remove(cpf);
+			resposta.setTipo(Resposta.DelFuncionario);
+		}else
+			resposta.setTipo(Resposta.ErroCPF);
+		return resposta;
+	}
+
+	public Resposta UpCarga(Carga c) throws SQLException{
+		Resposta resposta=new Resposta();
+		if(cargas.size()>c.getID()){
+			Statement st=con.createStatement();
+			if(!c.getDono().equals(""))
+				cargas.get(c.getID()).setDono(c.getDono());
+			if(!c.getRemetente().equals(""))
+				cargas.get(c.getID()).setRemetente(c.getRemetente());
+			if(!c.getDestinatario().equals(""))
+				cargas.get(c.getID()).setDestinatario(c.getDestinatario());
+			Carga ca=cargas.get(c.getID());
+			String op="UPDATE carga SET TempoPrevisto='"+ca.getTempoPrevisto()+"', Dono='"+ca.getDono()+
+				"', Remetente='"+ca.getRemetente()+"', Destinatario='"+ca.getDestinatario()+"' WHERE id="+ca.getID();
+			st.execute(op);
+			resposta.setTipo(Resposta.AlteraCarga);
+		}else
+			resposta.setTipo(Resposta.ErroID);
 		return resposta;
 	}
 

@@ -49,6 +49,10 @@ public class Carga implements Serializable{
 		return TempoPrevisto;
 	}
 
+	public void setTempoPrevisto(String TempoPrevisto){
+		this.TempoPrevisto=TempoPrevisto;
+	}
+
 	public String getDataSaida(){
 		return DataChegada;
 	}
@@ -61,12 +65,24 @@ public class Carga implements Serializable{
 		return Dono;
 	}
 
+	public void setDono(String Dono){
+		this.Dono=Dono;
+	}
+
 	public String getRemetente(){
 		return Remetente;
 	}
 
+	public void setRemetente(String Remetente){
+		this.Remetente=Remetente;
+	}
+
 	public String getDestinatario(){
 		return Destinatario;
+	}
+
+	public void setDestinatario(String Destinatario){
+		this.Destinatario=Destinatario;
 	}
 
 	public int getPosicao(){

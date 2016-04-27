@@ -3,6 +3,9 @@ import java.io.Serializable;
 public class Requisicao implements Serializable{
 
 	private static final long serialVersionUID=1L;
+	public static final int ErroBuscaCarga=-11;
+	public static final int ErroAlteraCarga=-10;
+	public static final int ErroDelFuncionario=-9;
 	public static final int ErroAlteraFuncionario=-8;
 	public static final int ErroCadastroFuncionario=-7;
 	public static final int ErroCPF=-6;
@@ -18,6 +21,9 @@ public class Requisicao implements Serializable{
 	public static final int CadastroFuncionario=4;
 	public static final int AlteraFuncionario=4;
 	public static final int Promove=6;
+	public static final int DelFuncionario=7;
+	public static final int AlteraCarga=8;
+	public static final int BuscaCarga=9;
 	private int tipo;
 	private Carga carga;
 	private Funcionario funcionario;

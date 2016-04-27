@@ -30,7 +30,6 @@ public class Server extends UnicastRemoteObject implements Server_Interface{
 			rep=bd.CadastraSaida(c.getID(), c.getDataSaida(), c.getLocalSaida());
 		}catch(SQLException e){
 			rep.setTipo(Resposta.ErroSaidaCarga);
-			e.printStackTrace();
 		}
 		return rep;
 	}
@@ -63,6 +62,26 @@ public class Server extends UnicastRemoteObject implements Server_Interface{
 			rep=bd.AlteraFuncionario(f, f.isAdministrador());
 		}catch(SQLException e){
 			rep.setTipo(Resposta.ErroAlteraFuncionario);
+		}
+		return rep;
+	}
+
+	public Resposta ExcluiFuncionario(Requisicao req) throws RemoteException{
+		Resposta rep=new Resposta();
+		try{
+			rep=bd.DelFuncionario(req.getFuncionario().getCPF());
+		}catch(SQLException e){
+			rep.setTipo(Resposta.ErroDelFuncionario);
+		}
+		return rep;
+	}
+
+	public Resposta AlteraCarga(Requisicao req) throws RemoteException{
+		Resposta rep=new Resposta();
+		try{
+			rep=bd.UpCarga(req.getCarga());
+		}catch(SQLException e){
+			rep.setTipo(Resposta.ErroAlteraCarga);
 		}
 		return rep;
 	}

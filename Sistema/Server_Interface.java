@@ -7,4 +7,6 @@ public interface Server_Interface extends Remote{
 	public Resposta Login(Requisicao req) throws RemoteException;
 	public Resposta CadastraFuncionario(Requisicao req) throws RemoteException;
 	public Resposta AlteraFuncionario(Requisicao req) throws RemoteException;
+	public Resposta ExcluiFuncionario(Requisicao req) throws RemoteException;
+	public Resposta AlteraCarga(Requisicao req) throws RemoteException;
 }

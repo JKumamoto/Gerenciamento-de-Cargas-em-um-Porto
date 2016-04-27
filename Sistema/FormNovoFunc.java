@@ -175,7 +175,8 @@ public class FormNovoFunc extends javax.swing.JFrame {
 			Calendar cal=Calendar.getInstance();
 			Date date1=sdf.parse(jTextField6.getText());
 			cal.setTime(date1);
-			String Data=cal.get(Calendar.YEAR)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.DATE);
+			int mes=cal.get(Calendar.MONTH)+1;
+			String Data=cal.get(Calendar.YEAR)+"-"+mes+"-"+cal.get(Calendar.DATE);
             
          	long chavecpf=Long.valueOf(jTextField1.getText());
             int rg=Integer.valueOf(jTextField2.getText());

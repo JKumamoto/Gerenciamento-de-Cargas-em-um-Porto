@@ -20,8 +20,10 @@ SERVIDOR = \
 
 TELAS = \
 		FormEntradaCarga.java	\
-		FormSaidaCarga.java	\
+		FormDelFunc.java	\
 		FormNovoFunc.java	\
+		FormSaidaCarga.java	\
+		FormUpCarga.java	\
 		FormUpFunc.java	\
 		Programa.java	\
 		TelaLogin.java

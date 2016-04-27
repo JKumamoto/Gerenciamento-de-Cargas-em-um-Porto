@@ -124,6 +124,7 @@ public class FormSaidaCarga extends javax.swing.JFrame {
 			Calendar cal=Calendar.getInstance();
 
 			int id=Integer.parseInt(jTextField1.getText());
+			if(id<0)	throw new RuntimeException("ID invalido");
 			Date date1=sdf.parse(jTextField2.getText());
 			cal.setTime(date1);
 			int mes=cal.get(Calendar.MONTH)+1;
