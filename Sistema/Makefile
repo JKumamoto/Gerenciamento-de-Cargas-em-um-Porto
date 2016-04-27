@@ -23,6 +23,7 @@ TELAS = \
 		FormDelFunc.java	\
 		FormNovoFunc.java	\
 		FormSaidaCarga.java	\
+		FormSearchCarga.java	\
 		FormUpCarga.java	\
 		FormUpFunc.java	\
 		Programa.java	\

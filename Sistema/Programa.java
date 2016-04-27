@@ -170,8 +170,7 @@ public class Programa extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // btn consultar
-        
-        
+        new FormSearchCarga().setVisible(true);
         
     }//GEN-LAST:event_jButton8ActionPerformed
 
