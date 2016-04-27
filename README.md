@@ -24,5 +24,5 @@ O incremento 2 contém as operações básicas do sistema vindas do incremento 1
 	* Registry-Server: compilar o servidor e registrar o rmi.
 	* Run-Server: rodar o servidor.
 	* Run-Cliente: rodar o cliente.
-	* Clean: Limpar a pasta.
+	* clean: Limpar a pasta.
 

@@ -1,59 +1,60 @@
 ######### MAKEFILE #########
 
-JFLAGS = -g
+CLASSPATH = .:mysql-connector-java-5.1.28.jar
+JFLAGS = -g -cp $(CLASSPATH)
 JC = javac
-CLASSPATH = /usr/share/java/mysql-connector-java-5.1.28.jar:.
+.SUFFIXES: .java .class
+.java.class:
+	$(JC) $(JFLAGS) $*.java
+
+CLASSES = \
+		Requisicao.java	\
+		Resposta.java	\
+		Carga.java	\
+		Funcionario.java
+
+SERVIDOR = \
+		Patio.java	\
+		Server.java	\
+		DAO.java
+
+TELAS = \
+		FormEntradaCarga.java	\
+		FormSaidaCarga.java	\
+		FormNovoFunc.java	\
+		FormUpFunc.java	\
+		Programa.java	\
+		TelaLogin.java
+
 
 all: Servidor Cliente
 		@echo "Build Pronta"
 
-Registry-Server: Servidor
+default: classes
+
+Servidor: default servidor
+		@echo "Build Servidor Pronto"
+
+Cliente: default telas
+		@echo "Build Cliente Pronto"
+
+classes: $(CLASSES:.java=.class)
+
+servidor: $(SERVIDOR:.java=.class)
+
+telas: $(TELAS:.java=.class)
+
+Registry-Server: 
 		rmic Server
 		rmiregistry &
 
 Run-Server: 
-		java -cp .:mysql-connector-java-5.1.28.jar Server &
-
-Run-Cliente: Cliente
-		java Programa
-
-default: Requisicao.class Resposta.class Patio.class Carga.class
-
-Servidor: default DAO.class Server.class
-		@echo "Build Servidor Pronto"
-
-Cliente: default FormEntradaCarga.class FormSaidaCarga.class Programa.class
-		@echo "Build Cliente Pronto"
-
-Requisicao.class: Requisicao.java
-		$(JC) $(JFLAGS) Requisicao.java
-
-Resposta.class: Resposta.java
-		$(JC) $(JFLAGS) Resposta.java
-
-Patio.class: Patio.java
-		$(JC) $(JFLAGS) Patio.java
-
-Carga.class: Carga.java
-		$(JC) $(JFLAGS) Carga.java
-
-Server.class: Server.java
-		$(JC) $(JFLAGS) Server.java
-
-DAO.class: DAO.java
-		$(JC) $(JFLAGS) -cp $(CLASSPATH) DAO.java
-
-FormEntradaCarga.class: FormEntradaCarga.java
-		$(JC) $(JFLAGS) FormEntradaCarga.java
-
-FormSaidaCarga.class: FormSaidaCarga.java
-		$(JC) $(JFLAGS) FormSaidaCarga.java
-
-Programa.class: Programa.java
-		$(JC) $(JFLAGS) Programa.java
-
+		java -cp $(CLASSPATH) Server
+		
+Run-Cliente: 
+		java TelaLogin
 
 ###### CLEAN #####
-clean:
+clean:	
 		rm -rf *.class
 		@echo "clean"
